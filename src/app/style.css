@@ -1,0 +1,20 @@
+table {   
+    border-collapse: collapse;
+}
+table, th, td {
+    padding: 10px;
+    border: 1px solid black;
+}
+.error {
+    color: red;
+}
+.success {
+    color: green;
+} 
+.row.align-item-start {
+    align-items: flex-start;
+}
+.bd {
+    font-weight: bolder;
+    font-size: 20px;
+}

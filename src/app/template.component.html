@@ -1,0 +1,181 @@
+<div class="header">
+    <h1>Teste MKData Angular - Roberto</h1>    
+  <h3>Implementação CRUD + Java</h3>
+<table><tr>
+	<td><button mat-raised-button color="warn" class="bd" type="button" (click)="delreg()">Apagar usuário</button></td>
+	<td><h2>Digite o id a apagar:<input name="delid" [(ngModel)]="delid"></h2></td>
+	<td><h2>Filtro de nome:<input name="filtro" [(ngModel)]="filtro"></h2></td>
+	<td><button mat-raised-button color="primary" class="bd" type="button" (click)="clearreg()">Limpar Registro</button></td>
+
+</tr></table>
+</div>
+<table style="width:100%">
+<tr>
+<td style="width:50%">
+	<h2>Adicionar novo usuário</h2>
+	<p *ngIf="isValidFormSubmitted" [ngClass] = "'success'">
+		Novo registro adicionado.
+	</p>
+	<form style="margin-left: 20px" #userForm="ngForm" (ngSubmit)="onFormSubmit(userForm)">
+	<table style=" width: 100%;">
+		<tr> 
+		<td style="width:40%">Nome:</td>
+		<td> 
+				<input name="nome" [(ngModel)]="user.nome" required #nome="ngModel">
+				<div *ngIf="nome.invalid && userForm.submitted && !isValidFormSubmitted" [ngClass] = "'error'"> 
+				Nome requerido.
+				</div>
+		</td>
+		</tr> 
+		<tr class="row align-item-start">
+			<td> 			
+				<mat-radio-group class="radio-group1" name="personalidade" [(ngModel)]="user.personalidade" required #personalidade="ngModel">  			
+				<mat-radio-button (click)= "setFisica()" class="radio-group1" value="fisica" color="primary">
+				Pessoa física
+				</mat-radio-button><br>
+				<mat-radio-button (click)= "setJuridica()" class="radio-group1" value="juridica" color="primary">
+				Pessoa Jurídica
+				</mat-radio-button><br>	     
+				</mat-radio-group>
+				<div *ngIf="personalidade.invalid && userForm.submitted && !isValidFormSubmitted" [ngClass] = "'error'"> 
+				Obrigatório selecionar personalidade.
+				</div>  		 			
+			</td> 
+			<td>
+				{{user.personalidade}} <br>
+				{{user.ativo}}
+			</td>
+		</tr>	  
+		<tr  *ngIf="isFisica"> 
+			<td>CPF:</td>
+			<td> 
+				<input name="cpf" [(ngModel)]="user.cpf" required #cpf="ngModel">
+				<div *ngIf="cpf.invalid && userForm.submitted && !isValidFormSubmitted" [ngClass] = "'error'"> 
+				CPF requerido.
+				</div>
+			</td>
+		</tr> 
+		<tr  *ngIf="isFisica"> 
+			<td>RG:</td>
+			<td> 
+				<input name="rg" [(ngModel)]="user.rg" required #rg="ngModel">
+				<div *ngIf="rg.invalid && userForm.submitted && !isValidFormSubmitted" [ngClass] = "'error'"> 
+				RG requerido.
+				</div>
+			</td>
+		</tr> 
+		<tr  *ngIf="isJuridica"> 
+			<td>CNPJ:</td>
+			<td> 
+				<input name="cnpj" [(ngModel)]="user.cnpj" required #cnpj="ngModel">
+				<div *ngIf="cnpj.invalid && userForm.submitted && !isValidFormSubmitted" [ngClass] = "'error'"> 
+				CNPJ requerido.
+				</div>
+			</td>
+		</tr> 
+		<tr  *ngIf="isJuridica"> 
+			<td>IE:</td>
+			<td> 
+				<input name="ie" [(ngModel)]="user.ie" required #ie="ngModel">
+				<div *ngIf="ie.invalid && userForm.submitted && !isValidFormSubmitted" [ngClass] = "'error'"> 
+				IE requerido.
+				</div>
+			</td>
+		</tr> 
+		<tr>	
+			<td>
+			<button mat-raised-button color="accent" class="bd" type="button" (click)="addTnum()">Incluir telefone</button>		 		  
+			</td>
+			<td *ngIf="tnum!=0">
+				Digite o DDD e número e aperte Adicionar telefone
+			</td>
+		</tr>	    
+			
+		<tr *ngIf="tnum!=0">
+			<td>
+				Digite DDD
+			</td>
+			<td>
+				<input name="newddd" [(ngModel)]="newDdd">
+			</td>		
+		</tr>
+		<tr *ngIf="tnum!=0">
+			<td>
+				Digite telefone
+			</td>
+			<td>
+				<input name="newtel" [(ngModel)]="newTel">
+			</td>	
+		</tr>
+		<tr *ngIf="tnum!=0">
+			<td>
+				<button class="bd" type="button" (click)="addDddTel()">Adicionar telefone</button>	  
+			</td>
+			<td *ngIf="tnum==1">
+				Nenhum telefone adicionado ainda
+			</td>
+			<td *ngIf="tnum==2">
+				Existe {{allTel.length}} telefone adicionado
+			</td>
+			<td *ngIf="tnum>2">
+				Existem {{allTel.length}} telefones adicionados
+			</td>
+		</tr>
+		
+		<tr>
+			<td>			
+				<mat-checkbox labelPosition="after" name="ativo" [(ngModel)]="user.ativo" color="primary">
+					Ativo
+				</mat-checkbox>			
+				<br>						
+			</td>
+		</tr> 
+		<tr>
+			<td>
+				<br>		
+					Data do Cadastro			
+				<br>			
+				<br>
+			</td>
+			<td>
+				{{user.data}}
+			</td>
+		</tr> 
+		<tr>	
+			<td>
+			<button mat-raised-button color="accent" class="bd" type="submit">CADASTRAR</button>		 		  
+			</td>
+		</tr>	   	
+		<ul>
+			<li *ngFor="let item of allTel; index as i">			  
+				<tr>
+					<td>
+						Telefone {{i+1}}
+					</td>
+					<td>
+						{{allDdd[i]}}
+					</td>
+					<td>
+						{{allTel[i]}}
+					</td>
+				</tr>
+			</li>	 
+		</ul>
+	</table>
+	</form> 
+	</td>
+	<td>
+		<div class="bd">TODOS OS USUÁRIOS <div *ngIf="filtro!=''">(filtrado)</div></div>
+		<ul>
+			<li *ngFor="let user of users"><div *ngIf="(user.nome.indexOf(filtro)!=-1)">
+				{{user.id}}-{{user.nome}} {{user.data}} {{user.cpf}} {{user.rg}} {{user.cnpj}} {{user.ie}} {{user.ddd1}}-{{user.tel1}}</div></li>
+		</ul>
+		<div class="bd">USUÁRIOS ATIVOS <div *ngIf="filtro!=''">(filtrado)</div></div>
+		<ul>
+			<li *ngFor="let user of users"><div *ngIf="user.ativo=='A' && (user.nome.indexOf(filtro)!=-1)">
+				{{user.id}}-{{user.nome}} {{user.data}} {{user.cpf}} {{user.rg}} {{user.cnpj}} {{user.ie}} {{user.ddd1}}-{{user.tel1}}</div></li>
+		</ul>
+	</td>
+	</tr>
+
+</table>
